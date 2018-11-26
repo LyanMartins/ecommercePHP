@@ -11,17 +11,19 @@ class Page
 	private $option = [];
 	private $defaults =  [
 
+		"header" => true,
+		"footer" => true,
 		"data" => []
 
 	];
 
 
-	public function __construct($opts = array()){
+	public function __construct($opts = array(),$tpl_dir = "/ecommerce/views/"){
 		
 		$this->option = array_merge($this->defaults, $opts);
 
 		$config = array(
-					"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/ecommerce/views/",
+					"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
 					"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/ecommerce/views-cache/",
 					"debug"         => false // set to false to improve the speed
 				   );
@@ -33,8 +35,11 @@ class Page
 
 		$this->setData($this->option["data"]);
 
-		$this->tpl->draw("header");
-
+		if($this->option["header"] === true) {
+		
+			$this->tpl->draw("header");
+		
+		}
 	}
 
 	private function setData($data = array()){
@@ -57,9 +62,11 @@ class Page
 
 	public function __destruct(){
 
-	
-		$this->tpl->draw("footer");
-	
+		if($this->option["footer"] === true){
+			
+			$this->tpl->draw("footer");
+		
+		}
 	}
 
 
